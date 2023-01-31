@@ -10,30 +10,22 @@ import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
+import com.mszgajewski.translator.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Spinner fromSpinner, toSpinner;
-    private TextInputEditText sourceText;
-    private ImageView micTV;
-    private MaterialButton translateButton;
-    private TextView translateTV;
+    ActivityMainBinding binding;
 
     String[] fromLanguage = {"Z", "Angielski", "Francuski", "Hiszpański", "Koreański", "Niemiecki", "Polski", "Włoski"};
     String[] toLanguage = {"Na", "Angielski", "Francuski", "Hiszpański", "Koreański", "Niemiecki", "Polski", "Włoski"};
@@ -44,16 +36,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        fromSpinner = findViewById(R.id.fromSpinner);
-        toSpinner = findViewById(R.id.toSpinner);
-        sourceText = findViewById(R.id.editText);
-        micTV = findViewById(R.id.microphone);
-        translateButton = findViewById(R.id.translateButton);
-        translateTV = findViewById(R.id.translatedTextView);
-
-        fromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.fromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 fromLanguageCode = getLanguageCode(fromLanguage[i]);
@@ -66,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         });
         ArrayAdapter fromAdapter = new ArrayAdapter(this, R.layout.spinner_item, fromLanguage);
         fromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fromSpinner.setAdapter(fromAdapter);
+        binding.fromSpinner.setAdapter(fromAdapter);
 
-        toSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.toSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 toLanguageCode = getLanguageCode(toLanguage[i]);
@@ -81,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
         });
         ArrayAdapter toAdapter = new ArrayAdapter(this, R.layout.spinner_item, toLanguage);
         toAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        toSpinner.setAdapter(toAdapter);
+        binding.toSpinner.setAdapter(toAdapter);
 
-        micTV.setOnClickListener(new View.OnClickListener() {
+        binding.microphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -100,19 +86,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        translateButton.setOnClickListener(new View.OnClickListener() {
+        binding.translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               translateTV.setVisibility(View.VISIBLE);
-               translateTV.setText("");
-               if (sourceText.getText().toString().isEmpty()) {
+               binding.translatedTextView.setVisibility(View.VISIBLE);
+               binding.translatedTextView.setText("");
+               if (binding.editText.getText().toString().isEmpty()) {
                    Toast.makeText(MainActivity.this, "Prosze wpisać tekst", Toast.LENGTH_SHORT).show();
                } else if (fromLanguageCode == "") {
                    Toast.makeText(MainActivity.this, "Prosze wybrać z jakiego języka ma być tłumaczenie", Toast.LENGTH_SHORT).show();
                } else if (toLanguageCode == "") {
                    Toast.makeText(MainActivity.this, "Prosze wybrać na jaki język ma być tłumaczenie", Toast.LENGTH_SHORT).show();
                } else {
-                   translateText(fromLanguageCode, toLanguageCode, sourceText.getText().toString());
+                   translateText(fromLanguageCode, toLanguageCode, binding.editText.getText().toString());
                }
             }
         });
@@ -121,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void translateText(String fromLanguageCode,String toLanguageCode, String sourceText) {
 
-        translateTV.setText("Pobieranie słownika...");
+        binding.translatedTextView.setText("Pobieranie słownika...");
         TranslatorOptions options = new TranslatorOptions.Builder()
                 .setSourceLanguage(fromLanguageCode)
                 .setTargetLanguage(toLanguageCode)
@@ -132,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
         translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                translateTV.setText("Tłumaczenie...");
+                binding.translatedTextView.setText("Tłumaczenie...");
                 translator.translate(sourceText).addOnSuccessListener(new OnSuccessListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        translateTV.setText(s);
+                        binding.translatedTextView.setText(s);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -158,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PERMISSION_CODE){
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            sourceText.setText(result.get(0));
+            binding.editText.setText(result.get(0));
         }
     }
 

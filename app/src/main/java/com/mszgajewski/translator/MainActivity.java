@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
-    String[] fromLanguage = {"Z", "Angielski", "Francuski", "Hiszpański", "Koreański", "Niemiecki", "Polski", "Włoski"};
-    String[] toLanguage = {"Na", "Angielski", "Francuski", "Hiszpański", "Koreański", "Niemiecki", "Polski", "Włoski"};
+    String[] fromLanguage = {"Z", "Angielski", "Francuski", "Hiszpański", "Japoński", "Koreański", "Niemiecki", "Polski", "Włoski"};
+    String[] toLanguage = {"Na", "Angielski", "Francuski", "Hiszpański", "Japoński", "Koreański", "Niemiecki", "Polski", "Włoski"};
 
     private static final int REQUEST_PERMISSION_CODE = 1;
     String  fromLanguageCode, toLanguageCode = "";
@@ -166,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
             case "Koreański":
                 languageCode = TranslateLanguage.KOREAN;
                 break;
+            case "Japoński":
+                languageCode = TranslateLanguage.JAPANESE;
+                break;
             case "Polski":
                 languageCode = TranslateLanguage.POLISH;
                 break;
@@ -177,5 +180,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return languageCode;
     }
-
 }

@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
+
         ArrayAdapter fromAdapter = new ArrayAdapter(this, R.layout.spinner_item, fromLanguage);
         fromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.fromSpinner.setAdapter(fromAdapter);
@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
+
         ArrayAdapter toAdapter = new ArrayAdapter(this, R.layout.spinner_item, toLanguage);
         toAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.toSpinner.setAdapter(toAdapter);
@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                }
             }
         });
-
     }
 
     private void translateText(String fromLanguageCode,String toLanguageCode, String sourceText) {

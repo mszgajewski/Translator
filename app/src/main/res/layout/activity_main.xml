@@ -79,14 +79,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:padding="5dp"
             app:hintEnabled="false"
             app:boxBackgroundMode="none"
-            android:elevation="8dp">
+            android:elevation="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText"
@@ -101,8 +101,6 @@
                 android:gravity="top"
                 android:background="@drawable/background"
                 android:textColorHint="@color/colorSecondary"/>
-
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -111,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="Przetłumacz"
+            android:textColor="@color/white"
             android:textSize="19sp"
             android:textAllCaps="false" />
 
@@ -158,6 +157,5 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:textAlignment="center"/>
-
     </LinearLayout>
 </ScrollView>
